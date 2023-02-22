@@ -1,17 +1,19 @@
 class AuthorsController < ApplicationController
-    
     skip_before_action :verify_authenticity_token
     def index 
      authors = Author.all
      render json:authors , status:200
     end
-
+ 
     def show 
+        
         author = Author.find_by(id: params[:id])
-        if author
-            render json:author, status:200
+        if author.present?
+            
+             render json:author, status:200
         else
-            render json:{error: "Not Found This id Author"}
+            
+             render json: {error: "author.errors.full_message"}
         end
     end
      
@@ -25,6 +27,7 @@ class AuthorsController < ApplicationController
     end
     def update 
         author = Author.find_by(id: params[:id])
+
         if author
             author.update(author_params)
             render json:author , status:200
